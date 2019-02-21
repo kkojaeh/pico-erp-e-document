@@ -3,4 +3,5 @@ include 'api'
 include 'impl'
 include 'test'
 include 'pdfmake-aws-lambda'
+include 'aws-s3'
 

@@ -10,8 +10,8 @@ public interface DocumentInfo {
 
   DocumentId getId();
 
-  String getName();
-
   DocumentTypeId getTypeId();
+
+  String getContentName();
 
 }

@@ -12,22 +12,22 @@ import pico.erp.shared.data.ContentInputStream;
 
 public class PdfmakeAwsLambdaDocumentMakerDefinition implements DocumentMakerDefinition {
 
-  private final AWSLambda lambda;
+  private final AWSLambda awsLambda;
 
-  private final String lambdaFunctionName;
+  private final String awsLambdaFunctionName;
 
   public PdfmakeAwsLambdaDocumentMakerDefinition(
     PdfmakeAwsLambdaDocumentMakerDefinitionConfig config) {
-    lambda = config.getLambda();
-    lambdaFunctionName = config.getLambdaFunctionName();
+    awsLambda = config.getAwsLambda();
+    awsLambdaFunctionName = config.getAwsLambdaFunctionName();
   }
 
   @Override
   public ContentInputStream make(String name, DocumentTemplate template) {
-    InvokeRequest request = new InvokeRequest().withFunctionName(lambdaFunctionName)
+    InvokeRequest request = new InvokeRequest().withFunctionName(awsLambdaFunctionName)
       .withPayload(ByteBuffer.wrap(template.asString().getBytes()));
 
-    InvokeResult result = lambda.invoke(request);
+    InvokeResult result = awsLambda.invoke(request);
     byte[] base64bytes = result.getPayload().array();
     // json 형태의 시작/마지막 (") 를 제거
     byte[] withoutQuotes = Arrays.copyOfRange(base64bytes, 1, base64bytes.length - 1);

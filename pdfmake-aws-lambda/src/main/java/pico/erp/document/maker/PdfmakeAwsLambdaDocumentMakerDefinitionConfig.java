@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 public class PdfmakeAwsLambdaDocumentMakerDefinitionConfig {
 
   @NotNull
-  String lambdaFunctionName;
+  String awsLambdaFunctionName;
 
   @NotNull
-  AWSLambda lambda;
+  AWSLambda awsLambda;
 
 }
