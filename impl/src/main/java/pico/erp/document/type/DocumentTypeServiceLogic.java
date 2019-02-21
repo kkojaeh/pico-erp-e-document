@@ -89,7 +89,7 @@ public class DocumentTypeServiceLogic implements DocumentTypeService, DocumentIn
     val documentType = documentTypeRepository.findBy(request.getId())
       .orElseThrow(DocumentTypeExceptions.NotFoundException::new);
     val template = documentType.getTemplate();
-    val context = mapping.get(request.getId()).createContext(request.getKey());
+    val context = mapping.get(request.getId()).getContext(request.getKey());
     val compiledMustache = mustacheFactory
       .compile(new StringReader(template), documentType.getId().getValue());
     val documentTemplate = new DocumentTemplateMustache(compiledMustache, context);
@@ -103,8 +103,8 @@ public class DocumentTypeServiceLogic implements DocumentTypeService, DocumentIn
     val template = Optional.ofNullable(request.getTemplate())
       .orElse("");
     val definition = mapping.get(request.getId());
-    val key = definition.createKey(request.getKey());
-    val context = definition.createContext(key);
+    val key = definition.getKey(request.getKey());
+    val context = definition.getContext(key);
     val compiledMustache = mustacheFactory
       .compile(new StringReader(template), documentType.getId().getValue());
     val documentTemplate = new DocumentTemplateMustache(compiledMustache, context);

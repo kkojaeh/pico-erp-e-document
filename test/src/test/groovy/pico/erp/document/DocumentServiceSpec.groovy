@@ -60,8 +60,8 @@ class DocumentServiceSpec extends Specification {
     return DocumentTypeDefinition.Impl.builder()
       .id(typeId)
       .name("테스트")
-      .keyCreator({ k -> k })
-      .contextCreator({ k -> [name: "테스트", key: k] })
+      .keyGetter({ k -> k })
+      .contextGetter({ k -> [name: "테스트", key: k] })
       .build()
   }
 

@@ -7,9 +7,9 @@ import lombok.Getter;
 
 public interface DocumentTypeDefinition<K, C> {
 
-  C createContext(K key);
+  C getContext(K key);
 
-  K createKey(String key);
+  K getKey(String key);
 
   DocumentTypeId getId();
 
@@ -24,18 +24,18 @@ public interface DocumentTypeDefinition<K, C> {
 
     String name;
 
-    Function<K, C> contextCreator;
+    Function<K, C> contextGetter;
 
-    Function<String, K> keyCreator;
+    Function<String, K> keyGetter;
 
     @Override
-    public C createContext(K key) {
-      return contextCreator.apply(key);
+    public C getContext(K key) {
+      return contextGetter.apply(key);
     }
 
     @Override
-    public K createKey(String key) {
-      return keyCreator.apply(key);
+    public K getKey(String key) {
+      return keyGetter.apply(key);
     }
 
   }
