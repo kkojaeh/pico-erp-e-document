@@ -7,11 +7,11 @@ create table edc_document (
 	creator_id varchar(50),
 	name varchar(100),
 	storage_key varchar(50),
-	type_id varchar(50),
+	subject_id varchar(50),
 	primary key (id)
 ) engine=InnoDB;
 
-create table edc_document_type (
+create table edc_document_subject (
 	id varchar(50) not null,
 	created_by_id varchar(50),
 	created_by_name varchar(50),

@@ -14,7 +14,7 @@ import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import lombok.val;
 import pico.erp.document.storage.DocumentStorageKey;
-import pico.erp.document.type.DocumentTypeId;
+import pico.erp.document.subject.DocumentSubjectId;
 import pico.erp.user.UserId;
 
 @Builder
@@ -31,7 +31,7 @@ public class Document implements Serializable, DocumentInfo {
   @Id
   DocumentId id;
 
-  DocumentTypeId typeId;
+  DocumentSubjectId subjectId;
 
   String name;
 
@@ -50,7 +50,7 @@ public class Document implements Serializable, DocumentInfo {
   public DocumentMessages.Create.Response apply(DocumentMessages.Create.Request request) {
     id = request.getId();
     name = request.getName();
-    typeId = request.getTypeId();
+    subjectId = request.getSubjectId();
     creatorId = request.getCreatorId();
     createdDate = OffsetDateTime.now();
     return new DocumentMessages.Create.Response(

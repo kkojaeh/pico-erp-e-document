@@ -1,4 +1,4 @@
-package pico.erp.document.type;
+package pico.erp.document.subject;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -21,7 +21,7 @@ import pico.erp.shared.TypeDefinitions;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "value")
 @ToString
-public class DocumentTypeId implements Serializable {
+public class DocumentSubjectId implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -31,8 +31,8 @@ public class DocumentTypeId implements Serializable {
   private String value;
 
   @JsonCreator
-  public static DocumentTypeId from(@NonNull String value) {
-    return new DocumentTypeId(value);
+  public static DocumentSubjectId from(@NonNull String value) {
+    return new DocumentSubjectId(value);
   }
 
 }

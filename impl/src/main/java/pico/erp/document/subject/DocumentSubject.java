@@ -1,4 +1,4 @@
-package pico.erp.document.type;
+package pico.erp.document.subject;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -18,31 +18,31 @@ import lombok.experimental.FieldDefaults;
 @EqualsAndHashCode(of = "id")
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DocumentType implements Serializable {
+public class DocumentSubject implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  DocumentTypeId id;
+  DocumentSubjectId id;
 
   String name;
 
   String template;
 
-  public DocumentTypeMessages.Create.Response apply(
-    DocumentTypeMessages.Create.Request request) {
+  public DocumentSubjectMessages.Create.Response apply(
+    DocumentSubjectMessages.Create.Request request) {
     this.id = request.getId();
     this.name = request.getName();
-    return new DocumentTypeMessages.Create.Response(
-      Arrays.asList(new DocumentTypeEvents.CreatedEvent(id))
+    return new DocumentSubjectMessages.Create.Response(
+      Arrays.asList(new DocumentSubjectEvents.CreatedEvent(id))
     );
   }
 
-  public DocumentTypeMessages.Update.Response apply(
-    DocumentTypeMessages.Update.Request request) {
+  public DocumentSubjectMessages.Update.Response apply(
+    DocumentSubjectMessages.Update.Request request) {
     this.name = request.getName();
     this.template = request.getTemplate();
-    return new DocumentTypeMessages.Update.Response(
-      Arrays.asList(new DocumentTypeEvents.UpdatedEvent(id))
+    return new DocumentSubjectMessages.Update.Response(
+      Arrays.asList(new DocumentSubjectEvents.UpdatedEvent(id))
     );
   }
 

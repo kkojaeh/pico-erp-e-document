@@ -1,4 +1,4 @@
-package pico.erp.document.type;
+package pico.erp.document.subject;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import pico.erp.shared.TypeDefinitions;
 
-public interface DocumentTypeRequests {
+public interface DocumentSubjectRequests {
 
   @Data
   @NoArgsConstructor
@@ -19,7 +19,7 @@ public interface DocumentTypeRequests {
 
     @Valid
     @NotNull
-    DocumentTypeId id;
+    DocumentSubjectId id;
 
     @NotNull
     @Size(max = TypeDefinitions.NAME_LENGTH)
@@ -35,7 +35,7 @@ public interface DocumentTypeRequests {
 
     @Valid
     @NotNull
-    DocumentTypeId id;
+    DocumentSubjectId id;
 
     @NotNull
     @Size(max = TypeDefinitions.NAME_LENGTH)
@@ -55,7 +55,7 @@ public interface DocumentTypeRequests {
 
     @Valid
     @NotNull
-    DocumentTypeId id;
+    DocumentSubjectId id;
 
     @Valid
     @NotNull
@@ -75,7 +75,7 @@ public interface DocumentTypeRequests {
 
     @Valid
     @NotNull
-    DocumentTypeId id;
+    DocumentSubjectId id;
 
     @Valid
     @NotNull

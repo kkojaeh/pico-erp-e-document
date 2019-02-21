@@ -1,11 +1,11 @@
-package pico.erp.document.type;
+package pico.erp.document.subject;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pico.erp.shared.event.Event;
 
-public interface DocumentTypeEvents {
+public interface DocumentSubjectEvents {
 
   @Data
   @AllArgsConstructor
@@ -14,7 +14,7 @@ public interface DocumentTypeEvents {
 
     public final static String CHANNEL = "event.e-document-type.created";
 
-    private DocumentTypeId id;
+    private DocumentSubjectId id;
 
     public String channel() {
       return CHANNEL;
@@ -29,7 +29,7 @@ public interface DocumentTypeEvents {
 
     public final static String CHANNEL = "event.e-document-type.updated";
 
-    private DocumentTypeId id;
+    private DocumentSubjectId id;
 
     public String channel() {
       return CHANNEL;

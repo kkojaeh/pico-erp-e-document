@@ -11,8 +11,8 @@ import pico.erp.document.DocumentExceptions.NotFoundException;
 import pico.erp.document.DocumentRequests.CreateRequest;
 import pico.erp.document.DocumentRequests.DeleteRequest;
 import pico.erp.document.storage.DocumentStorageStrategy;
-import pico.erp.document.type.DocumentTypeRequests;
-import pico.erp.document.type.DocumentTypeService;
+import pico.erp.document.subject.DocumentSubjectRequests;
+import pico.erp.document.subject.DocumentSubjectService;
 import pico.erp.shared.Public;
 import pico.erp.shared.data.ContentInputStream;
 import pico.erp.shared.event.Event;
@@ -33,7 +33,7 @@ public class DocumentServiceLogic implements DocumentService {
 
   @Lazy
   @Autowired
-  private DocumentTypeService documentTypeService;
+  private DocumentSubjectService documentSubjectService;
 
   @Autowired
   private EventPublisher eventPublisher;
@@ -52,9 +52,9 @@ public class DocumentServiceLogic implements DocumentService {
     val created = documentRepository.create(document);
     events.addAll(response.getEvents());
 
-    val contentInputStream = documentTypeService.make(
-      DocumentTypeRequests.MakeRequest.builder()
-        .id(document.getTypeId())
+    val contentInputStream = documentSubjectService.make(
+      DocumentSubjectRequests.MakeRequest.builder()
+        .id(document.getSubjectId())
         .key(request.getKey())
         .name(document.getName())
         .build()

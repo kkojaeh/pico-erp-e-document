@@ -1,6 +1,6 @@
 package pico.erp.document;
 
-import pico.erp.document.type.DocumentTypeId;
+import pico.erp.document.subject.DocumentSubjectId;
 
 public interface DocumentInfo {
 
@@ -10,7 +10,7 @@ public interface DocumentInfo {
 
   DocumentId getId();
 
-  DocumentTypeId getTypeId();
+  DocumentSubjectId getSubjectId();
 
   String getContentName();
 

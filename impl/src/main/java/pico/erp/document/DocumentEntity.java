@@ -20,7 +20,7 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import pico.erp.document.storage.DocumentStorageKey;
-import pico.erp.document.type.DocumentTypeId;
+import pico.erp.document.subject.DocumentSubjectId;
 import pico.erp.shared.TypeDefinitions;
 import pico.erp.user.UserId;
 
@@ -45,9 +45,9 @@ public class DocumentEntity implements Serializable {
   DocumentId id;
 
   @AttributeOverrides({
-    @AttributeOverride(name = "value", column = @Column(name = "TYPE_ID", length = TypeDefinitions.ID_LENGTH))
+    @AttributeOverride(name = "value", column = @Column(name = "SUBJECT_ID", length = TypeDefinitions.ID_LENGTH))
   })
-  DocumentTypeId typeId;
+  DocumentSubjectId subjectId;
 
   @Column(length = TypeDefinitions.NAME_X2_LENGTH)
   String name;

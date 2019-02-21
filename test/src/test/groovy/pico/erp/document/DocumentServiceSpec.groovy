@@ -12,11 +12,11 @@ import org.springframework.transaction.annotation.Transactional
 import pico.erp.document.maker.DocumentMakerDefinition
 import pico.erp.document.storage.DocumentStorageStrategy
 import pico.erp.document.storage.FileSystemDocumentStorageStrategy
+import pico.erp.document.subject.DocumentSubjectDefinition
+import pico.erp.document.subject.DocumentSubjectId
+import pico.erp.document.subject.DocumentSubjectRequests
+import pico.erp.document.subject.DocumentSubjectService
 import pico.erp.document.template.DocumentTemplate
-import pico.erp.document.type.DocumentTypeDefinition
-import pico.erp.document.type.DocumentTypeId
-import pico.erp.document.type.DocumentTypeRequests
-import pico.erp.document.type.DocumentTypeService
 import pico.erp.shared.IntegrationConfiguration
 import pico.erp.shared.Public
 import pico.erp.shared.data.ContentInputStream
@@ -56,9 +56,9 @@ class DocumentServiceSpec extends Specification {
 
   @Public
   @Bean
-  DocumentTypeDefinition testDocumentTypeDefinition() {
-    return DocumentTypeDefinition.Impl.builder()
-      .id(typeId)
+  DocumentSubjectDefinition testDocumentTypeDefinition() {
+    return DocumentSubjectDefinition.Impl.builder()
+      .id(subjectId)
       .name("테스트")
       .keyGetter({ k -> k })
       .contextGetter({ k -> [name: "테스트", key: k] })
@@ -71,12 +71,12 @@ class DocumentServiceSpec extends Specification {
 
   @Lazy
   @Autowired
-  DocumentTypeService documentTypeService
+  DocumentSubjectService documentTypeService
 
 
   static def template = """{{name}} Hello {{key}}"""
 
-  static def typeId = DocumentTypeId.from("TEST")
+  static def subjectId = DocumentSubjectId.from("TEST")
 
   def id = DocumentId.from("test")
 
@@ -85,8 +85,8 @@ class DocumentServiceSpec extends Specification {
 
   def setup() {
     documentTypeService.update(
-      new DocumentTypeRequests.UpdateRequest(
-        id: typeId,
+      new DocumentSubjectRequests.UpdateRequest(
+        id: subjectId,
         name: "테스트",
         template: template
       )
@@ -97,7 +97,7 @@ class DocumentServiceSpec extends Specification {
     documentService.create(
       new DocumentRequests.CreateRequest(
         id: id,
-        typeId: typeId,
+        subjectId: subjectId,
         name: "테스트 문서",
         key: "key1",
         creatorId: creatorId

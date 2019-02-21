@@ -1,4 +1,4 @@
-package pico.erp.document.type;
+package pico.erp.document.subject;
 
 import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 import pico.erp.shared.data.Auditor;
 
 @Data
-public class DocumentTypeView {
+public class DocumentSubjectView {
 
-  DocumentTypeId id;
+  DocumentSubjectId id;
 
   String name;
 

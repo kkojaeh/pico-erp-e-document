@@ -24,7 +24,7 @@ public abstract class DocumentMapper {
     return Document.builder()
       .id(entity.getId())
       .name(entity.getName())
-      .typeId(entity.getTypeId())
+      .subjectId(entity.getSubjectId())
       .creatorId(entity.getCreatorId())
       .createdDate(entity.getCreatedDate())
       .contentLength(entity.getContentLength())

@@ -1,4 +1,4 @@
-package pico.erp.document.type;
+package pico.erp.document.subject;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -10,53 +10,54 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-interface DocumentTypeEntityRepository extends CrudRepository<DocumentTypeEntity, DocumentTypeId> {
+interface DocumentSubjectEntityRepository extends
+  CrudRepository<DocumentSubjectEntity, DocumentSubjectId> {
 
 }
 
 @Repository
 @Transactional
-public class DocumentTypeRepositoryJpa implements DocumentTypeRepository {
+public class DocumentSubjectRepositoryJpa implements DocumentSubjectRepository {
 
   @Autowired
-  private DocumentTypeEntityRepository repository;
+  private DocumentSubjectEntityRepository repository;
 
   @Autowired
-  private DocumentTypeMapper mapper;
+  private DocumentSubjectMapper mapper;
 
   @Override
-  public DocumentType create(DocumentType documentType) {
-    val entity = mapper.jpa(documentType);
+  public DocumentSubject create(DocumentSubject documentSubject) {
+    val entity = mapper.jpa(documentSubject);
     val created = repository.save(entity);
     return mapper.jpa(created);
   }
 
   @Override
-  public void deleteBy(DocumentTypeId id) {
+  public void deleteBy(DocumentSubjectId id) {
     repository.delete(id);
   }
 
   @Override
-  public boolean exists(DocumentTypeId id) {
+  public boolean exists(DocumentSubjectId id) {
     return repository.exists(id);
   }
 
   @Override
-  public Stream<DocumentType> findAll() {
+  public Stream<DocumentSubject> findAll() {
     return StreamSupport.stream(repository.findAll().spliterator(), false)
       .map(mapper::jpa);
   }
 
   @Override
-  public Optional<DocumentType> findBy(DocumentTypeId id) {
+  public Optional<DocumentSubject> findBy(DocumentSubjectId id) {
     return Optional.ofNullable(repository.findOne(id))
       .map(mapper::jpa);
   }
 
   @Override
-  public void update(DocumentType documentType) {
-    val entity = repository.findOne(documentType.getId());
-    mapper.pass(mapper.jpa(documentType), entity);
+  public void update(DocumentSubject documentSubject) {
+    val entity = repository.findOne(documentSubject.getId());
+    mapper.pass(mapper.jpa(documentSubject), entity);
     repository.save(entity);
   }
 

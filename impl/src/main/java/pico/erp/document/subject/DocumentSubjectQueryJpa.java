@@ -1,4 +1,4 @@
-package pico.erp.document.type;
+package pico.erp.document.subject;
 
 import static org.springframework.util.StringUtils.isEmpty;
 
@@ -21,9 +21,9 @@ import pico.erp.shared.jpa.QueryDslJpaSupport;
 @Public
 @Transactional(readOnly = true)
 @Validated
-public class DocumentTypeQueryJpa implements DocumentTypeQuery {
+public class DocumentSubjectQueryJpa implements DocumentSubjectQuery {
 
-  private final QDocumentTypeEntity documentType = QDocumentTypeEntity.documentTypeEntity;
+  private final QDocumentSubjectEntity documentSubject = QDocumentSubjectEntity.documentSubjectEntity;
 
   @PersistenceContext
   private EntityManager entityManager;
@@ -32,22 +32,22 @@ public class DocumentTypeQueryJpa implements DocumentTypeQuery {
   private QueryDslJpaSupport queryDslJpaSupport;
 
   @Override
-  public Page<DocumentTypeView> retrieve(DocumentTypeView.Filter filter, Pageable pageable) {
-    val query = new JPAQuery<DocumentTypeView>(entityManager);
-    val select = Projections.bean(DocumentTypeView.class,
-      documentType.id,
-      documentType.name,
-      documentType.createdBy,
-      documentType.createdDate
+  public Page<DocumentSubjectView> retrieve(DocumentSubjectView.Filter filter, Pageable pageable) {
+    val query = new JPAQuery<DocumentSubjectView>(entityManager);
+    val select = Projections.bean(DocumentSubjectView.class,
+      documentSubject.id,
+      documentSubject.name,
+      documentSubject.createdBy,
+      documentSubject.createdDate
     );
 
     query.select(select);
-    query.from(documentType);
+    query.from(documentSubject);
 
     val builder = new BooleanBuilder();
 
     if (!isEmpty(filter.getName())) {
-      builder.and(documentType.name
+      builder.and(documentSubject.name
         .likeIgnoreCase(queryDslJpaSupport.toLikeKeyword("%", filter.getName(), "%")));
     }
 

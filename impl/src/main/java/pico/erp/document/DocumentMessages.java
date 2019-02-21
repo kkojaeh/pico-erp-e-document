@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 import pico.erp.document.storage.DocumentStorageStrategy;
-import pico.erp.document.type.DocumentTypeId;
+import pico.erp.document.subject.DocumentSubjectId;
 import pico.erp.shared.TypeDefinitions;
 import pico.erp.shared.data.ContentInputStream;
 import pico.erp.shared.event.Event;
@@ -30,7 +30,7 @@ public interface DocumentMessages {
 
       @Valid
       @NotNull
-      DocumentTypeId typeId;
+      DocumentSubjectId subjectId;
 
       @NotNull
       @Size(max = TypeDefinitions.NAME_X2_LENGTH)

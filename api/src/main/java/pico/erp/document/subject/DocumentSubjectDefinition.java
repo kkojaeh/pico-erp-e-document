@@ -1,26 +1,26 @@
-package pico.erp.document.type;
+package pico.erp.document.subject;
 
 import java.util.function.Function;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-public interface DocumentTypeDefinition<K, C> {
+public interface DocumentSubjectDefinition<K, C> {
 
   C getContext(K key);
 
   K getKey(String key);
 
-  DocumentTypeId getId();
+  DocumentSubjectId getId();
 
   String getName();
 
   @Getter
   @Builder
   @AllArgsConstructor
-  class Impl<K, C> implements DocumentTypeDefinition<K, C> {
+  class Impl<K, C> implements DocumentSubjectDefinition<K, C> {
 
-    DocumentTypeId id;
+    DocumentSubjectId id;
 
     String name;
 

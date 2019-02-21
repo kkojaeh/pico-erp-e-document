@@ -1,4 +1,4 @@
-package pico.erp.document.type;
+package pico.erp.document.subject;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -6,9 +6,9 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DocumentTypeData {
+public class DocumentSubjectData {
 
-  DocumentTypeId id;
+  DocumentSubjectId id;
 
   String name;
 

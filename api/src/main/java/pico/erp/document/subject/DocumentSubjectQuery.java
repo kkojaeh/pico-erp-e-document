@@ -1,12 +1,12 @@
-package pico.erp.document.type;
+package pico.erp.document.subject;
 
 import javax.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface DocumentTypeQuery {
+public interface DocumentSubjectQuery {
 
-  Page<DocumentTypeView> retrieve(@NotNull DocumentTypeView.Filter filter,
+  Page<DocumentSubjectView> retrieve(@NotNull DocumentSubjectView.Filter filter,
     @NotNull Pageable pageable);
 
 }

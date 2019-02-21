@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pico.erp.document.type.DocumentTypeId;
+import pico.erp.document.subject.DocumentSubjectId;
 import pico.erp.shared.TypeDefinitions;
 import pico.erp.user.UserId;
 
@@ -24,7 +24,7 @@ public interface DocumentRequests {
 
     @Valid
     @NotNull
-    DocumentTypeId typeId;
+    DocumentSubjectId subjectId;
 
     @NotNull
     @Size(max = TypeDefinitions.NAME_X2_LENGTH)

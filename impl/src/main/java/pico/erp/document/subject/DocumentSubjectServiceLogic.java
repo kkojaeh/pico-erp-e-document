@@ -1,4 +1,4 @@
-package pico.erp.document.type;
+package pico.erp.document.subject;
 
 import com.github.mustachejava.MustacheFactory;
 import java.io.StringReader;
@@ -15,9 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import pico.erp.document.DocumentInitializer.DocumentInitializable;
 import pico.erp.document.maker.DocumentMakerDefinition;
+import pico.erp.document.subject.DocumentSubjectRequests.MakeRequest;
+import pico.erp.document.subject.DocumentSubjectRequests.TestRequest;
 import pico.erp.document.template.DocumentTemplateMustache;
-import pico.erp.document.type.DocumentTypeRequests.MakeRequest;
-import pico.erp.document.type.DocumentTypeRequests.TestRequest;
 import pico.erp.shared.Public;
 import pico.erp.shared.data.ContentInputStream;
 import pico.erp.shared.event.EventPublisher;
@@ -27,22 +27,22 @@ import pico.erp.shared.event.EventPublisher;
 @Public
 @Transactional
 @Validated
-public class DocumentTypeServiceLogic implements DocumentTypeService, DocumentInitializable {
+public class DocumentSubjectServiceLogic implements DocumentSubjectService, DocumentInitializable {
 
-  private final Map<DocumentTypeId, DocumentTypeDefinition> mapping = new HashMap<>();
+  private final Map<DocumentSubjectId, DocumentSubjectDefinition> mapping = new HashMap<>();
 
   @Autowired
-  private DocumentTypeRepository documentTypeRepository;
+  private DocumentSubjectRepository documentSubjectRepository;
 
   @Autowired
   private EventPublisher eventPublisher;
 
   @Autowired
-  private DocumentTypeMapper mapper;
+  private DocumentSubjectMapper mapper;
 
   @Lazy
   @Autowired
-  private List<DocumentTypeDefinition> definitions;
+  private List<DocumentSubjectDefinition> definitions;
 
   @Autowired
   private MustacheFactory mustacheFactory;
@@ -52,15 +52,15 @@ public class DocumentTypeServiceLogic implements DocumentTypeService, DocumentIn
   private DocumentMakerDefinition makerDefinition;
 
   @Override
-  public boolean exists(DocumentTypeId id) {
-    return documentTypeRepository.exists(id);
+  public boolean exists(DocumentSubjectId id) {
+    return documentSubjectRepository.exists(id);
   }
 
   @Override
-  public DocumentTypeData get(DocumentTypeId id) {
-    return documentTypeRepository.findBy(id)
+  public DocumentSubjectData get(DocumentSubjectId id) {
+    return documentSubjectRepository.findBy(id)
       .map(mapper::map)
-      .orElseThrow(DocumentTypeExceptions.NotFoundException::new);
+      .orElseThrow(DocumentSubjectExceptions.NotFoundException::new);
   }
 
   @Override
@@ -70,15 +70,16 @@ public class DocumentTypeServiceLogic implements DocumentTypeService, DocumentIn
       definitions.stream()
         .collect(Collectors.toMap(d -> d.getId(), d -> d))
     );
-    documentTypeRepository.findAll().forEach(documentType -> targets.remove(documentType.getId()));
+    documentSubjectRepository.findAll()
+      .forEach(documentType -> targets.remove(documentType.getId()));
     targets.values().forEach(definition -> {
-      val documentType = new DocumentType();
-      val request = DocumentTypeMessages.Create.Request.builder()
+      val documentType = new DocumentSubject();
+      val request = DocumentSubjectMessages.Create.Request.builder()
         .id(definition.getId())
         .name(definition.getName())
         .build();
       val response = documentType.apply(request);
-      documentTypeRepository.create(documentType);
+      documentSubjectRepository.create(documentType);
       eventPublisher.publishEvents(response.getEvents());
     });
 
@@ -86,8 +87,8 @@ public class DocumentTypeServiceLogic implements DocumentTypeService, DocumentIn
 
   @Override
   public ContentInputStream make(MakeRequest request) {
-    val documentType = documentTypeRepository.findBy(request.getId())
-      .orElseThrow(DocumentTypeExceptions.NotFoundException::new);
+    val documentType = documentSubjectRepository.findBy(request.getId())
+      .orElseThrow(DocumentSubjectExceptions.NotFoundException::new);
     val template = documentType.getTemplate();
     val context = mapping.get(request.getId()).getContext(request.getKey());
     val compiledMustache = mustacheFactory
@@ -98,8 +99,8 @@ public class DocumentTypeServiceLogic implements DocumentTypeService, DocumentIn
 
   @Override
   public ContentInputStream test(TestRequest request) {
-    val documentType = documentTypeRepository.findBy(request.getId())
-      .orElseThrow(DocumentTypeExceptions.NotFoundException::new);
+    val documentType = documentSubjectRepository.findBy(request.getId())
+      .orElseThrow(DocumentSubjectExceptions.NotFoundException::new);
     val template = Optional.ofNullable(request.getTemplate())
       .orElse("");
     val definition = mapping.get(request.getId());
@@ -112,11 +113,11 @@ public class DocumentTypeServiceLogic implements DocumentTypeService, DocumentIn
   }
 
   @Override
-  public void update(DocumentTypeRequests.UpdateRequest request) {
-    val documentType = documentTypeRepository.findBy(request.getId())
-      .orElseThrow(DocumentTypeExceptions.NotFoundException::new);
+  public void update(DocumentSubjectRequests.UpdateRequest request) {
+    val documentType = documentSubjectRepository.findBy(request.getId())
+      .orElseThrow(DocumentSubjectExceptions.NotFoundException::new);
     val response = documentType.apply(mapper.map(request));
-    documentTypeRepository.update(documentType);
+    documentSubjectRepository.update(documentType);
     eventPublisher.publishEvents(response.getEvents());
   }
 }

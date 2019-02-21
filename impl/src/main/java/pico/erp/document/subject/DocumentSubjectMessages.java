@@ -1,4 +1,4 @@
-package pico.erp.document.type;
+package pico.erp.document.subject;
 
 import java.util.Collection;
 import javax.validation.Valid;
@@ -12,7 +12,7 @@ import lombok.Value;
 import pico.erp.shared.TypeDefinitions;
 import pico.erp.shared.event.Event;
 
-public interface DocumentTypeMessages {
+public interface DocumentSubjectMessages {
 
   interface Create {
 
@@ -24,7 +24,7 @@ public interface DocumentTypeMessages {
 
       @Valid
       @NotNull
-      DocumentTypeId id;
+      DocumentSubjectId id;
 
       @NotNull
       @Size(max = TypeDefinitions.NAME_LENGTH)

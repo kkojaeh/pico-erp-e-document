@@ -1,4 +1,4 @@
-package pico.erp.document.type;
+package pico.erp.document.subject;
 
 
 import java.io.Serializable;
@@ -28,8 +28,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import pico.erp.shared.TypeDefinitions;
 import pico.erp.shared.data.Auditor;
 
-@Entity(name = "DocumentType")
-@Table(name = "EDC_DOCUMENT_TYPE", indexes = {
+@Entity(name = "DocumentSubject")
+@Table(name = "EDC_DOCUMENT_SUBJECT", indexes = {
 })
 @Data
 @EqualsAndHashCode(of = "id")
@@ -39,7 +39,7 @@ import pico.erp.shared.data.Auditor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DocumentTypeEntity implements Serializable {
+public class DocumentSubjectEntity implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -47,7 +47,7 @@ public class DocumentTypeEntity implements Serializable {
   @AttributeOverrides({
     @AttributeOverride(name = "value", column = @Column(name = "ID", length = TypeDefinitions.ID_LENGTH))
   })
-  DocumentTypeId id;
+  DocumentSubjectId id;
 
   @Column(length = TypeDefinitions.NAME_LENGTH)
   String name;
