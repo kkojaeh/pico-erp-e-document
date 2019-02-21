@@ -26,7 +26,6 @@ public interface DocumentEvents {
   }
 
 
-
   @ToString
   @Value
   class CreatedEvent implements Event {

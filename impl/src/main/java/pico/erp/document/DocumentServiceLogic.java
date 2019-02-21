@@ -54,16 +54,16 @@ public class DocumentServiceLogic implements DocumentService {
 
     val contentInputStream = documentTypeService.make(
       DocumentTypeRequests.MakeRequest.builder()
-      .id(document.getTypeId())
-      .key(request.getKey())
-      .name(document.getName())
-      .build()
+        .id(document.getTypeId())
+        .key(request.getKey())
+        .name(document.getName())
+        .build()
     );
     val response2 = created.apply(
       DocumentMessages.Store.Request.builder()
-      .contentInputStream(contentInputStream)
-      .storageStrategy(documentStorageStrategy)
-      .build()
+        .contentInputStream(contentInputStream)
+        .storageStrategy(documentStorageStrategy)
+        .build()
     );
     documentRepository.update(created);
     events.addAll(response2.getEvents());

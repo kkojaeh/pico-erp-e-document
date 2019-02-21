@@ -1,13 +1,9 @@
 package pico.erp.document;
 
-import java.time.OffsetDateTime;
 import java.util.Optional;
-import java.util.stream.Stream;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

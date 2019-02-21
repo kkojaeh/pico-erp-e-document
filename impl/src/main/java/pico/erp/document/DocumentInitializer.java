@@ -10,12 +10,6 @@ import pico.erp.shared.ApplicationInitializer;
 @Configuration
 public class DocumentInitializer implements ApplicationInitializer {
 
-  public interface DocumentInitializable {
-
-    void initialize();
-
-  }
-
   @Lazy
   @Autowired
   private List<DocumentInitializable> initializables;
@@ -23,5 +17,11 @@ public class DocumentInitializer implements ApplicationInitializer {
   @Override
   public void initialize() {
     initializables.stream().forEach(DocumentInitializable::initialize);
+  }
+
+  public interface DocumentInitializable {
+
+    void initialize();
+
   }
 }

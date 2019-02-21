@@ -13,7 +13,6 @@ import pico.erp.user.UserId;
 public interface DocumentRequests {
 
 
-
   @Data
   @NoArgsConstructor
   @AllArgsConstructor

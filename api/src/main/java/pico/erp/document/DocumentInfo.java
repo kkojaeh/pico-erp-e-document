@@ -4,14 +4,14 @@ import pico.erp.document.type.DocumentTypeId;
 
 public interface DocumentInfo {
 
-  DocumentId getId();
-
-  DocumentTypeId getTypeId();
-
-  String getName();
+  long getContentLength();
 
   String getContentType();
 
-  long getContentLength();
+  DocumentId getId();
+
+  String getName();
+
+  DocumentTypeId getTypeId();
 
 }

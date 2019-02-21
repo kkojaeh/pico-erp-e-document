@@ -52,6 +52,18 @@ public class DocumentTypeServiceLogic implements DocumentTypeService, DocumentIn
   private DocumentMakerDefinition makerDefinition;
 
   @Override
+  public boolean exists(DocumentTypeId id) {
+    return documentTypeRepository.exists(id);
+  }
+
+  @Override
+  public DocumentTypeData get(DocumentTypeId id) {
+    return documentTypeRepository.findBy(id)
+      .map(mapper::map)
+      .orElseThrow(DocumentTypeExceptions.NotFoundException::new);
+  }
+
+  @Override
   public void initialize() {
     val targets = definitions.stream().collect(Collectors.toMap(d -> d.getId(), d -> d));
     mapping.putAll(
@@ -73,24 +85,15 @@ public class DocumentTypeServiceLogic implements DocumentTypeService, DocumentIn
   }
 
   @Override
-  public boolean exists(DocumentTypeId id) {
-    return documentTypeRepository.exists(id);
-  }
-
-  @Override
-  public DocumentTypeData get(DocumentTypeId id) {
-    return documentTypeRepository.findBy(id)
-      .map(mapper::map)
-      .orElseThrow(DocumentTypeExceptions.NotFoundException::new);
-  }
-
-  @Override
-  public void update(DocumentTypeRequests.UpdateRequest request) {
+  public ContentInputStream make(MakeRequest request) {
     val documentType = documentTypeRepository.findBy(request.getId())
       .orElseThrow(DocumentTypeExceptions.NotFoundException::new);
-    val response = documentType.apply(mapper.map(request));
-    documentTypeRepository.update(documentType);
-    eventPublisher.publishEvents(response.getEvents());
+    val template = documentType.getTemplate();
+    val context = mapping.get(request.getId()).createContext(request.getKey());
+    val compiledMustache = mustacheFactory
+      .compile(new StringReader(template), documentType.getId().getValue());
+    val documentTemplate = new DocumentTemplateMustache(compiledMustache, context);
+    return makerDefinition.make(request.getName(), documentTemplate);
   }
 
   @Override
@@ -109,14 +112,11 @@ public class DocumentTypeServiceLogic implements DocumentTypeService, DocumentIn
   }
 
   @Override
-  public ContentInputStream make(MakeRequest request) {
+  public void update(DocumentTypeRequests.UpdateRequest request) {
     val documentType = documentTypeRepository.findBy(request.getId())
       .orElseThrow(DocumentTypeExceptions.NotFoundException::new);
-    val template = documentType.getTemplate();
-    val context = mapping.get(request.getId()).createContext(request.getKey());
-    val compiledMustache = mustacheFactory
-      .compile(new StringReader(template), documentType.getId().getValue());
-    val documentTemplate = new DocumentTemplateMustache(compiledMustache, context);
-    return makerDefinition.make(request.getName(), documentTemplate);
+    val response = documentType.apply(mapper.map(request));
+    documentTypeRepository.update(documentType);
+    eventPublisher.publishEvents(response.getEvents());
   }
 }

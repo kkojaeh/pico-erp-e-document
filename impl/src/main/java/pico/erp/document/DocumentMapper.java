@@ -34,7 +34,7 @@ public abstract class DocumentMapper {
       .build();
   }
 
-  public abstract DocumentMessages.Create.Request map(DocumentRequests.CreateRequest request);
+  public abstract DocumentEntity entity(Document document);
 
   @Mappings({
     @Mapping(target = "storageStrategy", expression = "java(documentStorageStrategy)")
@@ -43,7 +43,7 @@ public abstract class DocumentMapper {
 
   public abstract DocumentData map(Document document);
 
-  public abstract DocumentEntity entity(Document document);
+  public abstract DocumentMessages.Create.Request map(DocumentRequests.CreateRequest request);
 
   public abstract void pass(DocumentEntity from, @MappingTarget DocumentEntity to);
 

@@ -1,10 +1,5 @@
 package pico.erp.document;
 
-import com.fasterxml.jackson.core.Version;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleAbstractTypeResolver;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.MustacheFactory;
 import java.util.Properties;
@@ -62,15 +57,15 @@ public class DocumentApplication implements ApplicationStarter {
     return false;
   }
 
-  @Override
-  public pico.erp.shared.Application start(String... args) {
-    return new ApplicationImpl(application().run(args));
-  }
-
   @Bean
   public MustacheFactory mustacheFactory() {
     val factory = new DefaultMustacheFactory();
     return factory;
+  }
+
+  @Override
+  public pico.erp.shared.Application start(String... args) {
+    return new ApplicationImpl(application().run(args));
   }
 
 }

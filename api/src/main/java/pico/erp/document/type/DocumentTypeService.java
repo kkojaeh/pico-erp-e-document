@@ -10,12 +10,11 @@ public interface DocumentTypeService {
 
   DocumentTypeData get(@Valid @NotNull DocumentTypeId id);
 
-  void update(@Valid @NotNull DocumentTypeRequests.UpdateRequest request);
+  ContentInputStream make(@Valid @NotNull DocumentTypeRequests.MakeRequest request);
 
   ContentInputStream test(@Valid @NotNull DocumentTypeRequests.TestRequest request);
 
-  ContentInputStream make(@Valid @NotNull DocumentTypeRequests.MakeRequest request);
-
+  void update(@Valid @NotNull DocumentTypeRequests.UpdateRequest request);
 
 
 }
