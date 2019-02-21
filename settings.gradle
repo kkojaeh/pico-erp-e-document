@@ -1,0 +1,6 @@
+rootProject.name = 'pico-erp-e-document'
+include 'api'
+include 'impl'
+include 'test'
+include 'pdfmake-aws-lambda'
+
