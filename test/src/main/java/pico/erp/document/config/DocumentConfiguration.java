@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import pico.erp.document.context.DocumentContextFactory;
 import pico.erp.document.context.DocumentContextFactoryImpl;
 import pico.erp.document.maker.DocumentMakerDefinition;
+import pico.erp.document.storage.DocumentStorageStrategy;
+import pico.erp.document.storage.FileSystemDocumentStorageStrategy;
 import pico.erp.document.template.DocumentTemplate;
 import pico.erp.shared.Public;
 import pico.erp.shared.data.ContentInputStream;
@@ -41,5 +43,15 @@ public class DocumentConfiguration {
 
     };
   }
+
+  @Public
+  @Bean
+  @ConditionalOnMissingBean(DocumentStorageStrategy.class)
+  public DocumentStorageStrategy noOpDocumentStorageStrategy() {
+    return new FileSystemDocumentStorageStrategy();
+  }
+
+
+
 
 }
