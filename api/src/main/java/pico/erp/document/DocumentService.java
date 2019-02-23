@@ -10,6 +10,8 @@ public interface DocumentService {
 
   void delete(@Valid DocumentRequests.DeleteRequest request);
 
+  boolean exists(@NotNull DocumentId id);
+
   DocumentData get(@NotNull DocumentId id);
 
   ContentInputStream load(@NotNull DocumentId id);

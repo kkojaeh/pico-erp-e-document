@@ -81,6 +81,11 @@ public class DocumentServiceLogic implements DocumentService {
   }
 
   @Override
+  public boolean exists(DocumentId id) {
+    return documentRepository.exists(id);
+  }
+
+  @Override
   public DocumentData get(DocumentId id) {
     return documentRepository.findBy(id)
       .map(mapper::map)
