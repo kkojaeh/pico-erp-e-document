@@ -11,6 +11,10 @@ import java.net.URLEncoder;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import pico.erp.document.DocumentInfo;
@@ -18,15 +22,28 @@ import pico.erp.document.DocumentInfo;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AwsS3DocumentStorageStrategy implements DocumentStorageStrategy {
 
-  final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+  private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+
+
+  public AwsS3DocumentStorageStrategy(Config config) {
+    amazonS3 = config.getAmazonS3();
+    amazonS3BucketName = config.getAmazonS3BucketName();
+  }
 
   private final AmazonS3 amazonS3;
 
   private final String amazonS3BucketName;
 
-  public AwsS3DocumentStorageStrategy(AwsS3DocumentStorageStrategyConfig config) {
-    amazonS3 = config.getAmazonS3();
-    amazonS3BucketName = config.getAmazonS3BucketName();
+  @NoArgsConstructor
+  @AllArgsConstructor
+  @Builder
+  @Data
+  public static class Config {
+
+    AmazonS3 amazonS3;
+
+    String amazonS3BucketName;
+
   }
 
   private DocumentStorageKey createStorageKey(DocumentInfo info) {

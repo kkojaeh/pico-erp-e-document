@@ -7,19 +7,38 @@ import java.io.ByteArrayInputStream;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Base64;
+import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import pico.erp.document.template.DocumentTemplate;
 import pico.erp.shared.data.ContentInputStream;
 
 public class PdfmakeAwsLambdaDocumentMakerDefinition implements DocumentMakerDefinition {
 
+  public PdfmakeAwsLambdaDocumentMakerDefinition(
+    Config config) {
+    awsLambda = config.getAwsLambda();
+    awsLambdaFunctionName = config.getAwsLambdaFunctionName();
+  }
+
   private final AWSLambda awsLambda;
 
   private final String awsLambdaFunctionName;
 
-  public PdfmakeAwsLambdaDocumentMakerDefinition(
-    PdfmakeAwsLambdaDocumentMakerDefinitionConfig config) {
-    awsLambda = config.getAwsLambda();
-    awsLambdaFunctionName = config.getAwsLambdaFunctionName();
+  @NoArgsConstructor
+  @AllArgsConstructor
+  @Builder
+  @Data
+  public static class Config {
+
+    @NotNull
+    String awsLambdaFunctionName;
+
+    @NotNull
+    AWSLambda awsLambda;
+
   }
 
   @Override
