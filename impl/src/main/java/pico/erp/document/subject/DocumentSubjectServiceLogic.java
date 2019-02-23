@@ -89,7 +89,8 @@ public class DocumentSubjectServiceLogic implements DocumentSubjectService, Docu
   public ContentInputStream make(MakeRequest request) {
     val documentType = documentSubjectRepository.findBy(request.getId())
       .orElseThrow(DocumentSubjectExceptions.NotFoundException::new);
-    val template = documentType.getTemplate();
+    val template = Optional.ofNullable(documentType.getTemplate())
+      .orElse("");
     val context = mapping.get(request.getId()).getContext(request.getKey());
     val compiledMustache = mustacheFactory
       .compile(new StringReader(template), documentType.getId().getValue());
