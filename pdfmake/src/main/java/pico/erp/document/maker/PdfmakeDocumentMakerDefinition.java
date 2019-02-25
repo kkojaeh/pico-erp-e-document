@@ -3,17 +3,24 @@ package pico.erp.document.maker;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.lang.ProcessBuilder.Redirect;
+import java.net.URI;
 import java.util.UUID;
 import lombok.SneakyThrows;
 import lombok.val;
 import org.apache.commons.io.FileUtils;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternUtils;
 import pico.erp.document.template.DocumentTemplate;
 import pico.erp.shared.data.ContentInputStream;
 
 public class PdfmakeDocumentMakerDefinition implements DocumentMakerDefinition {
 
   private final File workspace;
+
+  private static final String WORKSPACE_PATTERN =
+    ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + "/pdfmake-workspace/**/*";
 
   @SneakyThrows
   public PdfmakeDocumentMakerDefinition() {
@@ -22,8 +29,18 @@ public class PdfmakeDocumentMakerDefinition implements DocumentMakerDefinition {
     if (!workspace.exists()) {
       workspace.mkdirs();
     }
-    val resources = new ClassPathResource("pdfmake-workspace");
-    FileUtils.copyDirectory(resources.getFile(), workspace);
+
+    val resolver = ResourcePatternUtils.getResourcePatternResolver(new DefaultResourceLoader());
+    val resources = resolver.getResources(WORKSPACE_PATTERN);
+    val root = new ClassPathResource("pdfmake-workspace").getURI();
+    for (val resource : resources) {
+      URI uri = resource.getURI();
+      if (resource.contentLength() > 0) {
+        val relative = uri.toString().substring(root.toString().length());
+        FileUtils.copyInputStreamToFile(resource.getInputStream(),
+          new File(workspace.getAbsolutePath() + relative));
+      }
+    }
     run("npm", "install");
   }
 
