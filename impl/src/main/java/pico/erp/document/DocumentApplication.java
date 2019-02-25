@@ -12,9 +12,12 @@ import lombok.val;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
+import pico.erp.document.DocumentApi.Roles;
 import pico.erp.shared.ApplicationId;
 import pico.erp.shared.ApplicationStarter;
+import pico.erp.shared.Public;
 import pico.erp.shared.SpringBootConfigs;
+import pico.erp.shared.data.Role;
 import pico.erp.shared.impl.ApplicationImpl;
 import pico.erp.user.UserApi;
 
@@ -66,6 +69,18 @@ public class DocumentApplication implements ApplicationStarter {
   @Override
   public pico.erp.shared.Application start(String... args) {
     return new ApplicationImpl(application().run(args));
+  }
+
+  @Bean
+  @Public
+  public Role documentAccessor() {
+    return Roles.DOCUMENT_ACCESSOR;
+  }
+
+  @Bean
+  @Public
+  public Role documentManager() {
+    return Roles.DOCUMENT_MANAGER;
   }
 
 }
