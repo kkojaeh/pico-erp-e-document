@@ -10,8 +10,6 @@ import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
 import pico.erp.document.maker.DocumentMakerDefinition
-import pico.erp.document.storage.DocumentStorageStrategy
-import pico.erp.document.storage.FileSystemDocumentStorageStrategy
 import pico.erp.document.subject.DocumentSubjectDefinition
 import pico.erp.document.subject.DocumentSubjectId
 import pico.erp.document.subject.DocumentSubjectRequests
@@ -46,12 +44,6 @@ class DocumentServiceSpec extends Specification {
           .build()
       }
     }
-  }
-
-  @Public
-  @Bean
-  DocumentStorageStrategy testFileSystemAttachmentItemStorage() {
-    return new FileSystemDocumentStorageStrategy()
   }
 
   @Public

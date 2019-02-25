@@ -1,7 +1,9 @@
 package pico.erp.document.config;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import lombok.val;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,11 +49,13 @@ public class DocumentConfiguration {
   @Public
   @Bean
   @ConditionalOnMissingBean(DocumentStorageStrategy.class)
-  public DocumentStorageStrategy noOpDocumentStorageStrategy() {
-    return new FileSystemDocumentStorageStrategy();
+  public DocumentStorageStrategy noOpDocumentStorageStrategy(@Value("${document.storage.root-dir}")
+    File rootDirectory) {
+    val config = FileSystemDocumentStorageStrategy.Config.builder()
+      .rootDirectory(rootDirectory)
+      .build();
+    return new FileSystemDocumentStorageStrategy(config);
   }
-
-
 
 
 }

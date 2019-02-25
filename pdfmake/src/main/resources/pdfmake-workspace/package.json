@@ -1,0 +1,13 @@
+{
+  "name": "pico-erp-pdfmake",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "pdfmake": "^0.1.53",
+    "stringstream": "^1.0.0"
+  }
+}
