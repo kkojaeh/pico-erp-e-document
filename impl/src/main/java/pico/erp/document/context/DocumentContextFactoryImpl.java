@@ -6,9 +6,12 @@ import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import javax.xml.bind.DatatypeConverter;
 import lombok.SneakyThrows;
+import org.apache.commons.io.IOUtils;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.util.StringUtils;
+import pico.erp.shared.data.ContentInputStream;
 
 public class DocumentContextFactoryImpl implements DocumentContextFactory {
 
@@ -47,12 +50,25 @@ public class DocumentContextFactoryImpl implements DocumentContextFactory {
       phoneNumberUtil.format(number, PhoneNumberFormat.NATIONAL));
   }
 
+  @SneakyThrows
+  private static String contentEncoder(ContentInputStream value) {
+    StringBuilder builder = new StringBuilder();
+    builder.append("data:");
+    builder.append(value.getContentType());
+    builder.append(";base64,");
+    byte[] bytes = IOUtils.readFully(value, (int) value.getContentLength());
+    builder.append(DatatypeConverter.printBase64Binary(bytes));
+    return builder.toString();
+  }
+
   @Override
   public DocumentContext factory() {
     return DocumentContext.builder()
       .dateFormatter(DocumentContextFactoryImpl::dateFormatter)
       .dateTimeFormatter(DocumentContextFactoryImpl::dateTimeFormatter)
       .phoneNumberFormatter(DocumentContextFactoryImpl::phoneNumberFormatter)
+      .contentEncoder(DocumentContextFactoryImpl::contentEncoder)
       .build();
   }
+
 }

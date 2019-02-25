@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import pico.erp.shared.data.ContentInputStream;
 
 @RequiredArgsConstructor
 @Builder
@@ -26,5 +27,9 @@ public class DocumentContext {
   @Getter
   @NonNull
   private final Function<String, String> phoneNumberFormatter;
+
+  @Getter
+  @NonNull
+  private final Function<ContentInputStream, String> contentEncoder;
 
 }

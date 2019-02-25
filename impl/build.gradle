@@ -14,4 +14,6 @@ dependencies {
 
   compile('net.coobird:thumbnailator:0.4.8')
 
+  compile('commons-io:commons-io')
+
 }
