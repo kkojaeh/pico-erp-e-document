@@ -3,6 +3,7 @@ package pico.erp.document.maker;
 import com.amazonaws.services.lambda.AWSLambda;
 import com.amazonaws.services.lambda.model.InvokeRequest;
 import com.amazonaws.services.lambda.model.InvokeResult;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.ByteArrayInputStream;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
@@ -12,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
 import pico.erp.document.template.DocumentTemplate;
 import pico.erp.shared.data.ContentInputStream;
 
@@ -41,10 +43,15 @@ public class PdfmakeAwsLambdaDocumentMakerDefinition implements DocumentMakerDef
 
   }
 
+  private final ObjectMapper mapper = new ObjectMapper();
+
+  @SneakyThrows
   @Override
   public ContentInputStream make(String name, DocumentTemplate template) {
+
+    byte[] input = mapper.writeValueAsBytes(template.asString());
     InvokeRequest request = new InvokeRequest().withFunctionName(awsLambdaFunctionName)
-      .withPayload(ByteBuffer.wrap(template.asString().getBytes()));
+      .withPayload(ByteBuffer.wrap(input));
 
     InvokeResult result = awsLambda.invoke(request);
     byte[] base64bytes = result.getPayload().array();
