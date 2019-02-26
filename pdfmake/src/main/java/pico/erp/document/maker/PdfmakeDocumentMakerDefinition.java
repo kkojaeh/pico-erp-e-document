@@ -52,19 +52,26 @@ public class PdfmakeDocumentMakerDefinition implements DocumentMakerDefinition {
     val output = uuid + ".pdf";
     val inputFile = new File(workspace, input);
     val outputFile = new File(workspace, output);
-    // file 이동
-    FileUtils.writeStringToFile(inputFile, template.asString(), "UTF-8");
-    run("node", "index.js", input, output);
-    byte[] bytes = FileUtils.readFileToByteArray(outputFile);
-    val result = ContentInputStream.builder()
-      .name(name + ".pdf")
-      .inputStream(new ByteArrayInputStream(bytes))
-      .contentType("application/pdf")
-      .contentLength(bytes.length)
-      .build();
-    inputFile.delete();
-    outputFile.delete();
-    return result;
+    try {
+      // file 이동
+      FileUtils.writeStringToFile(inputFile, template.asString(), "UTF-8");
+      run("node", "index.js", input, output);
+      byte[] bytes = FileUtils.readFileToByteArray(outputFile);
+      val result = ContentInputStream.builder()
+        .name(name + ".pdf")
+        .inputStream(new ByteArrayInputStream(bytes))
+        .contentType("application/pdf")
+        .contentLength(bytes.length)
+        .build();
+      return result;
+    } finally {
+      if (inputFile.exists()) {
+        inputFile.delete();
+      }
+      if (outputFile.exists()) {
+        outputFile.delete();
+      }
+    }
   }
 
   @SneakyThrows
