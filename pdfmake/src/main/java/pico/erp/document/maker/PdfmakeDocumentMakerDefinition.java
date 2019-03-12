@@ -5,6 +5,10 @@ import java.io.File;
 import java.lang.ProcessBuilder.Redirect;
 import java.net.URI;
 import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.val;
 import org.apache.commons.io.FileUtils;
@@ -23,9 +27,8 @@ public class PdfmakeDocumentMakerDefinition implements DocumentMakerDefinition {
     ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + "/pdfmake-workspace/**/*";
 
   @SneakyThrows
-  public PdfmakeDocumentMakerDefinition() {
-    String tmpdir = System.getProperty("java.io.tmpdir");
-    workspace = new File(tmpdir, "pdfmake-workspace");
+  public PdfmakeDocumentMakerDefinition(Config config) {
+    workspace = config.getWorkspace();
     if (!workspace.exists()) {
       workspace.mkdirs();
     }
@@ -42,6 +45,16 @@ public class PdfmakeDocumentMakerDefinition implements DocumentMakerDefinition {
       }
     }
     run("npm", "install");
+  }
+
+  @NoArgsConstructor
+  @AllArgsConstructor
+  @Builder
+  @Data
+  public static class Config {
+
+    File workspace;
+
   }
 
   @SneakyThrows

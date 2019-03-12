@@ -7,7 +7,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "pdfmake": "^0.1.53",
-    "stringstream": "^1.0.0"
+    "pdfmake": "^0.1.53"
   }
 }

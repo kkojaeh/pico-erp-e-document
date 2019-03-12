@@ -87,5 +87,7 @@ flyway:
   enabled: false
 
 document:
+  pdfmake:
+    workspace: ${DOCUMENT_PDFMAKE_DIR:#{systemProperties['java.io.tmpdir']}/pdfmake-workspace}
   storage:
     root-dir: ${DOCUMENT_FILE_SYSTEM_ROOT_DIR:#{systemProperties['java.io.tmpdir']}/pico-e-document-storage}
