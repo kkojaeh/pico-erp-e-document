@@ -8,7 +8,7 @@ spring:
     store-type: NONE
   messages:
     cache-seconds: 60
-    basename: document-messages
+    basename: e-document-messages
     encoding: UTF-8
   datasource:
     url: ${ATTACHMENT_DATASOURCE_URL:${DATASOURCE_URL:jdbc:p6spy:hsqldb:mem:e-document}}
