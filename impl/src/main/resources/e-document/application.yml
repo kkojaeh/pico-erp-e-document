@@ -1,22 +1,25 @@
-banner:
-  location: classpath:e-document/banner.txt
-
 spring:
+  jmx:
+    default-domain: e-document
+  banner:
+    location: classpath:e-document/banner.txt
   application:
     name: pico-e-document
   session:
     store-type: NONE
   messages:
-    cache-seconds: 60
     basename: e-document-messages
     encoding: UTF-8
   datasource:
-    url: ${ATTACHMENT_DATASOURCE_URL:${DATASOURCE_URL:jdbc:p6spy:hsqldb:mem:e-document}}
-    driver-class-name: ${ATTACHMENT_DATASOURCE_DRIVER_CLASS_NAME:${DATASOURCE_DRIVER_CLASS_NAME:com.p6spy.engine.spy.P6SpyDriver}}
-    username: ${ATTACHMENT_DATASOURCE_USERNAME:${DATASOURCE_USERNAME:as}}
-    password: ${ATTACHMENT_DATASOURCE_PASSWORD:${DATASOURCE_PASSWORD:null}}
+    name: e-document-datasource
+    url: ${E_DOCUMENT_DATASOURCE_URL:${DATASOURCE_URL:jdbc:p6spy:hsqldb:mem:e-document}}
+    driver-class-name: ${E_DOCUMENT_DATASOURCE_DRIVER_CLASS_NAME:${DATASOURCE_DRIVER_CLASS_NAME:com.p6spy.engine.spy.P6SpyDriver}}
+    username: ${E_DOCUMENT_DATASOURCE_USERNAME:${DATASOURCE_USERNAME:as}}
+    password: ${E_DOCUMENT_DATASOURCE_PASSWORD:${DATASOURCE_PASSWORD:null}}
     hikari:
       maximum-pool-size: 4
+  flyway:
+    enabled: false
   jpa:
     database: HSQL
     hibernate:
@@ -82,9 +85,6 @@ logging:
   level:
     org:
       springframework: INFO
-
-flyway:
-  enabled: false
 
 document:
   pdfmake:

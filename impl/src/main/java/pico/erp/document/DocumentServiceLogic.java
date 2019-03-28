@@ -1,6 +1,7 @@
 package pico.erp.document;
 
 import java.util.LinkedList;
+import kkojaeh.spring.boot.component.Give;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -13,13 +14,12 @@ import pico.erp.document.DocumentRequests.DeleteRequest;
 import pico.erp.document.storage.DocumentStorageStrategy;
 import pico.erp.document.subject.DocumentSubjectRequests;
 import pico.erp.document.subject.DocumentSubjectService;
-import pico.erp.shared.Public;
 import pico.erp.shared.data.ContentInputStream;
 import pico.erp.shared.event.Event;
 import pico.erp.shared.event.EventPublisher;
 
 @Service
-@Public
+@Give
 @Transactional
 @Validated
 public class DocumentServiceLogic implements DocumentService {

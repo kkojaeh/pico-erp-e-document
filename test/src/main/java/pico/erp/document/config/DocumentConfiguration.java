@@ -13,22 +13,19 @@ import pico.erp.document.maker.DocumentMakerDefinition;
 import pico.erp.document.storage.DocumentStorageStrategy;
 import pico.erp.document.storage.FileSystemDocumentStorageStrategy;
 import pico.erp.document.template.DocumentTemplate;
-import pico.erp.shared.Public;
 import pico.erp.shared.data.ContentInputStream;
 
 @Configuration
 public class DocumentConfiguration {
 
-  @Public
   @Bean
   @ConditionalOnMissingBean(DocumentContextFactory.class)
   public DocumentContextFactory noOpDocumentContextFactory() {
     return new DocumentContextFactoryImpl();
   }
 
-  @Public
   @Bean
-  @ConditionalOnMissingBean(DocumentMakerDefinition.class)
+  @ConditionalOnMissingBean
   public DocumentMakerDefinition textDocumentMakerDefinition() {
     return new DocumentMakerDefinition() {
 
@@ -46,7 +43,6 @@ public class DocumentConfiguration {
     };
   }
 
-  @Public
   @Bean
   @ConditionalOnMissingBean(DocumentStorageStrategy.class)
   public DocumentStorageStrategy noOpDocumentStorageStrategy(@Value("${document.storage.root-dir}")

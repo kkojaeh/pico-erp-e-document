@@ -1,11 +1,11 @@
 package pico.erp.document
 
+import kkojaeh.spring.boot.component.SpringBootTestComponent
 import org.apache.commons.io.IOUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Lazy
 import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
@@ -15,20 +15,19 @@ import pico.erp.document.subject.DocumentSubjectId
 import pico.erp.document.subject.DocumentSubjectRequests
 import pico.erp.document.subject.DocumentSubjectService
 import pico.erp.document.template.DocumentTemplate
-import pico.erp.shared.IntegrationConfiguration
-import pico.erp.shared.Public
+import pico.erp.shared.TestParentApplication
 import pico.erp.shared.data.ContentInputStream
 import pico.erp.user.UserId
 import spock.lang.Specification
 
-@SpringBootTest(classes = [IntegrationConfiguration])
+@SpringBootTest(classes = [DocumentApplication, TestConfig])
+@SpringBootTestComponent(parent = TestParentApplication, siblings = [])
 @Transactional
 @Rollback
-@ActiveProfiles("test")
 @Configuration
+@ActiveProfiles("test")
 class DocumentServiceSpec extends Specification {
 
-  @Public
   @Bean
   DocumentMakerDefinition testDocumentMakerDefinition() {
     return new DocumentMakerDefinition() {
@@ -46,7 +45,6 @@ class DocumentServiceSpec extends Specification {
     }
   }
 
-  @Public
   @Bean
   DocumentSubjectDefinition testDocumentTypeDefinition() {
     return DocumentSubjectDefinition.Impl.builder()
@@ -57,11 +55,9 @@ class DocumentServiceSpec extends Specification {
       .build()
   }
 
-  @Lazy
   @Autowired
   DocumentService documentService
 
-  @Lazy
   @Autowired
   DocumentSubjectService documentTypeService
 

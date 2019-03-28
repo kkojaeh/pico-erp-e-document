@@ -7,27 +7,29 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import kkojaeh.spring.boot.component.Give;
+import kkojaeh.spring.boot.component.SpringBootComponentReadyEvent;
+import kkojaeh.spring.boot.component.Take;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import pico.erp.document.DocumentInitializer.DocumentInitializable;
 import pico.erp.document.maker.DocumentMakerDefinition;
 import pico.erp.document.subject.DocumentSubjectRequests.MakeRequest;
 import pico.erp.document.subject.DocumentSubjectRequests.TestRequest;
 import pico.erp.document.template.DocumentTemplateMustache;
-import pico.erp.shared.Public;
 import pico.erp.shared.data.ContentInputStream;
 import pico.erp.shared.event.EventPublisher;
 
 @SuppressWarnings("Duplicates")
 @Service
-@Public
+@Give
 @Transactional
 @Validated
-public class DocumentSubjectServiceLogic implements DocumentSubjectService, DocumentInitializable {
+public class DocumentSubjectServiceLogic implements DocumentSubjectService,
+  ApplicationListener<SpringBootComponentReadyEvent> {
 
   private final Map<DocumentSubjectId, DocumentSubjectDefinition> mapping = new HashMap<>();
 
@@ -40,15 +42,13 @@ public class DocumentSubjectServiceLogic implements DocumentSubjectService, Docu
   @Autowired
   private DocumentSubjectMapper mapper;
 
-  @Lazy
-  @Autowired
+  @Take(required = false)
   private List<DocumentSubjectDefinition> definitions;
 
   @Autowired
   private MustacheFactory mustacheFactory;
 
-  @Lazy
-  @Autowired
+  @Take(required = false)
   private DocumentMakerDefinition makerDefinition;
 
   @Override
@@ -64,7 +64,20 @@ public class DocumentSubjectServiceLogic implements DocumentSubjectService, Docu
   }
 
   @Override
-  public void initialize() {
+  public ContentInputStream make(MakeRequest request) {
+    val documentType = documentSubjectRepository.findBy(request.getId())
+      .orElseThrow(DocumentSubjectExceptions.NotFoundException::new);
+    val template = Optional.ofNullable(documentType.getTemplate())
+      .orElse("");
+    val context = mapping.get(request.getId()).getContext(request.getKey());
+    val compiledMustache = mustacheFactory
+      .compile(new StringReader(template), documentType.getId().getValue());
+    val documentTemplate = new DocumentTemplateMustache(compiledMustache, context);
+    return makerDefinition.make(request.getName(), documentTemplate);
+  }
+
+  @Override
+  public void onApplicationEvent(SpringBootComponentReadyEvent event) {
     val targets = definitions.stream().collect(Collectors.toMap(d -> d.getId(), d -> d));
     mapping.putAll(
       definitions.stream()
@@ -82,20 +95,6 @@ public class DocumentSubjectServiceLogic implements DocumentSubjectService, Docu
       documentSubjectRepository.create(documentType);
       eventPublisher.publishEvents(response.getEvents());
     });
-
-  }
-
-  @Override
-  public ContentInputStream make(MakeRequest request) {
-    val documentType = documentSubjectRepository.findBy(request.getId())
-      .orElseThrow(DocumentSubjectExceptions.NotFoundException::new);
-    val template = Optional.ofNullable(documentType.getTemplate())
-      .orElse("");
-    val context = mapping.get(request.getId()).getContext(request.getKey());
-    val compiledMustache = mustacheFactory
-      .compile(new StringReader(template), documentType.getId().getValue());
-    val documentTemplate = new DocumentTemplateMustache(compiledMustache, context);
-    return makerDefinition.make(request.getName(), documentTemplate);
   }
 
   @Override

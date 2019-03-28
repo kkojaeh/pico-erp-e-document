@@ -8,7 +8,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import java.io.InputStream;
 import java.net.URLEncoder;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -48,7 +48,7 @@ public class AwsS3DocumentStorageStrategy implements DocumentStorageStrategy {
 
   private DocumentStorageKey createStorageKey(DocumentInfo info) {
     String key = String
-      .format("%s/%s", formatter.format(OffsetDateTime.now()), info.getId().getValue());
+      .format("%s/%s", formatter.format(LocalDateTime.now()), info.getId().getValue());
     return DocumentStorageKey.from(key);
   }
 
