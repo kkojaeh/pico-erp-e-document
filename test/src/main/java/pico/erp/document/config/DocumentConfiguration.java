@@ -2,6 +2,7 @@ package pico.erp.document.config;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import kkojaeh.spring.boot.component.Give;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -18,12 +19,25 @@ import pico.erp.shared.data.ContentInputStream;
 @Configuration
 public class DocumentConfiguration {
 
+  @Give
   @Bean
   @ConditionalOnMissingBean(DocumentContextFactory.class)
   public DocumentContextFactory noOpDocumentContextFactory() {
     return new DocumentContextFactoryImpl();
   }
 
+  @Give
+  @Bean
+  @ConditionalOnMissingBean(DocumentStorageStrategy.class)
+  public DocumentStorageStrategy noOpDocumentStorageStrategy(@Value("${document.storage.root-dir}")
+    File rootDirectory) {
+    val config = FileSystemDocumentStorageStrategy.Config.builder()
+      .rootDirectory(rootDirectory)
+      .build();
+    return new FileSystemDocumentStorageStrategy(config);
+  }
+
+  @Give
   @Bean
   @ConditionalOnMissingBean
   public DocumentMakerDefinition textDocumentMakerDefinition() {
@@ -41,16 +55,6 @@ public class DocumentConfiguration {
       }
 
     };
-  }
-
-  @Bean
-  @ConditionalOnMissingBean(DocumentStorageStrategy.class)
-  public DocumentStorageStrategy noOpDocumentStorageStrategy(@Value("${document.storage.root-dir}")
-    File rootDirectory) {
-    val config = FileSystemDocumentStorageStrategy.Config.builder()
-      .rootDirectory(rootDirectory)
-      .build();
-    return new FileSystemDocumentStorageStrategy(config);
   }
 
 
