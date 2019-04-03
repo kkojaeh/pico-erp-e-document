@@ -2,7 +2,7 @@ package pico.erp.document;
 
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.MustacheFactory;
-import kkojaeh.spring.boot.component.Give;
+import kkojaeh.spring.boot.component.ComponentBean;
 import kkojaeh.spring.boot.component.SpringBootComponent;
 import kkojaeh.spring.boot.component.SpringBootComponentBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import pico.erp.ComponentDefinition;
 import pico.erp.document.DocumentApi.Roles;
 import pico.erp.shared.SharedConfiguration;
 import pico.erp.shared.data.Role;
@@ -30,7 +31,7 @@ import pico.erp.shared.data.Role;
 @Import(value = {
   SharedConfiguration.class
 })
-public class DocumentApplication {
+public class DocumentApplication implements ComponentDefinition {
 
   public static void main(String[] args) {
     new SpringBootComponentBuilder()
@@ -39,22 +40,26 @@ public class DocumentApplication {
   }
 
   @Bean
-  public MustacheFactory mustacheFactory() {
-    val factory = new DefaultMustacheFactory();
-    return factory;
-  }
-
-
-  @Bean
-  @Give
+  @ComponentBean(host = false)
   public Role documentAccessor() {
     return Roles.DOCUMENT_ACCESSOR;
   }
 
   @Bean
-  @Give
+  public MustacheFactory mustacheFactory() {
+    val factory = new DefaultMustacheFactory();
+    return factory;
+  }
+
+  @Bean
+  @ComponentBean(host = false)
   public Role documentManager() {
     return Roles.DOCUMENT_MANAGER;
+  }
+
+  @Override
+  public Class<?> getComponentClass() {
+    return DocumentApplication.class;
   }
 
 }

@@ -15,13 +15,14 @@ import pico.erp.document.subject.DocumentSubjectId
 import pico.erp.document.subject.DocumentSubjectRequests
 import pico.erp.document.subject.DocumentSubjectService
 import pico.erp.document.template.DocumentTemplate
+import pico.erp.shared.ComponentDefinitionServiceLoaderTestComponentSiblingsSupplier
 import pico.erp.shared.TestParentApplication
 import pico.erp.shared.data.ContentInputStream
 import pico.erp.user.UserId
 import spock.lang.Specification
 
 @SpringBootTest(classes = [DocumentApplication, TestConfig])
-@SpringBootTestComponent(parent = TestParentApplication, siblings = [])
+@SpringBootTestComponent(parent = TestParentApplication, siblingsSupplier = ComponentDefinitionServiceLoaderTestComponentSiblingsSupplier.class)
 @Transactional
 @Rollback
 @Configuration

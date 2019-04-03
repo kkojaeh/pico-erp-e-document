@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import kkojaeh.spring.boot.component.Give;
+import kkojaeh.spring.boot.component.ComponentAutowired;
+import kkojaeh.spring.boot.component.ComponentBean;
 import kkojaeh.spring.boot.component.SpringBootComponentReadyEvent;
-import kkojaeh.spring.boot.component.Take;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -25,7 +25,7 @@ import pico.erp.shared.event.EventPublisher;
 
 @SuppressWarnings("Duplicates")
 @Service
-@Give
+@ComponentBean
 @Transactional
 @Validated
 public class DocumentSubjectServiceLogic implements DocumentSubjectService,
@@ -42,13 +42,13 @@ public class DocumentSubjectServiceLogic implements DocumentSubjectService,
   @Autowired
   private DocumentSubjectMapper mapper;
 
-  @Take(required = false)
+  @ComponentAutowired(required = false)
   private List<DocumentSubjectDefinition> definitions;
 
   @Autowired
   private MustacheFactory mustacheFactory;
 
-  @Take(required = false)
+  @ComponentAutowired(required = false)
   private DocumentMakerDefinition makerDefinition;
 
   @Override
