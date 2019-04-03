@@ -1,7 +1,7 @@
 package pico.erp.document;
 
 import java.io.Serializable;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import javax.persistence.Id;
 import lombok.AccessLevel;
@@ -37,7 +37,7 @@ public class Document implements Serializable, DocumentInfo {
 
   UserId creatorId;
 
-  OffsetDateTime createdDate;
+  LocalDateTime createdDate;
 
   DocumentStorageKey storageKey;
 
@@ -52,7 +52,7 @@ public class Document implements Serializable, DocumentInfo {
     name = request.getName();
     subjectId = request.getSubjectId();
     creatorId = request.getCreatorId();
-    createdDate = OffsetDateTime.now();
+    createdDate = LocalDateTime.now();
     return new DocumentMessages.Create.Response(
       Arrays.asList(new DocumentEvents.CreatedEvent(id))
     );

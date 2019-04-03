@@ -1,6 +1,6 @@
 package pico.erp.document;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import lombok.Data;
 import pico.erp.document.subject.DocumentSubjectId;
 import pico.erp.user.UserId;
@@ -16,6 +16,6 @@ public class DocumentData {
 
   UserId creatorId;
 
-  OffsetDateTime createdDate;
+  LocalDateTime createdDate;
 
 }

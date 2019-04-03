@@ -2,6 +2,7 @@ package pico.erp.document.config;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import kkojaeh.spring.boot.component.ComponentBean;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -13,22 +14,32 @@ import pico.erp.document.maker.DocumentMakerDefinition;
 import pico.erp.document.storage.DocumentStorageStrategy;
 import pico.erp.document.storage.FileSystemDocumentStorageStrategy;
 import pico.erp.document.template.DocumentTemplate;
-import pico.erp.shared.Public;
 import pico.erp.shared.data.ContentInputStream;
 
 @Configuration
 public class DocumentConfiguration {
 
-  @Public
   @Bean
+  @ComponentBean(host = false)
   @ConditionalOnMissingBean(DocumentContextFactory.class)
   public DocumentContextFactory noOpDocumentContextFactory() {
     return new DocumentContextFactoryImpl();
   }
 
-  @Public
   @Bean
-  @ConditionalOnMissingBean(DocumentMakerDefinition.class)
+  @ComponentBean(host = false)
+  @ConditionalOnMissingBean(DocumentStorageStrategy.class)
+  public DocumentStorageStrategy noOpDocumentStorageStrategy(@Value("${document.storage.root-dir}")
+    File rootDirectory) {
+    val config = FileSystemDocumentStorageStrategy.Config.builder()
+      .rootDirectory(rootDirectory)
+      .build();
+    return new FileSystemDocumentStorageStrategy(config);
+  }
+
+  @Bean
+  @ComponentBean(host = false)
+  @ConditionalOnMissingBean
   public DocumentMakerDefinition textDocumentMakerDefinition() {
     return new DocumentMakerDefinition() {
 
@@ -44,17 +55,6 @@ public class DocumentConfiguration {
       }
 
     };
-  }
-
-  @Public
-  @Bean
-  @ConditionalOnMissingBean(DocumentStorageStrategy.class)
-  public DocumentStorageStrategy noOpDocumentStorageStrategy(@Value("${document.storage.root-dir}")
-    File rootDirectory) {
-    val config = FileSystemDocumentStorageStrategy.Config.builder()
-      .rootDirectory(rootDirectory)
-      .build();
-    return new FileSystemDocumentStorageStrategy(config);
   }
 
 

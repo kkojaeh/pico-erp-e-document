@@ -31,23 +31,23 @@ public class DocumentRepositoryJpa implements DocumentRepository {
 
   @Override
   public void deleteBy(DocumentId id) {
-    repository.delete(id);
+    repository.deleteById(id);
   }
 
   @Override
   public boolean exists(DocumentId id) {
-    return repository.exists(id);
+    return repository.existsById(id);
   }
 
   @Override
   public Optional<Document> findBy(DocumentId id) {
-    return Optional.ofNullable(repository.findOne(id))
+    return repository.findById(id)
       .map(mapper::domain);
   }
 
   @Override
   public void update(Document document) {
-    val entity = repository.findOne(document.getId());
+    val entity = repository.findById(document.getId()).get();
     mapper.pass(mapper.entity(document), entity);
     repository.save(entity);
   }

@@ -1,6 +1,6 @@
 package pico.erp.document.subject;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +16,7 @@ public class DocumentSubjectView {
 
   Auditor createdBy;
 
-  OffsetDateTime createdDate;
+  LocalDateTime createdDate;
 
   @Data
   @NoArgsConstructor

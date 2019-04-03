@@ -34,12 +34,12 @@ public class DocumentSubjectRepositoryJpa implements DocumentSubjectRepository {
 
   @Override
   public void deleteBy(DocumentSubjectId id) {
-    repository.delete(id);
+    repository.deleteById(id);
   }
 
   @Override
   public boolean exists(DocumentSubjectId id) {
-    return repository.exists(id);
+    return repository.existsById(id);
   }
 
   @Override
@@ -50,13 +50,13 @@ public class DocumentSubjectRepositoryJpa implements DocumentSubjectRepository {
 
   @Override
   public Optional<DocumentSubject> findBy(DocumentSubjectId id) {
-    return Optional.ofNullable(repository.findOne(id))
+    return repository.findById(id)
       .map(mapper::jpa);
   }
 
   @Override
   public void update(DocumentSubject documentSubject) {
-    val entity = repository.findOne(documentSubject.getId());
+    val entity = repository.findById(documentSubject.getId()).get();
     mapper.pass(mapper.jpa(documentSubject), entity);
     repository.save(entity);
   }

@@ -3,7 +3,7 @@ package pico.erp.document.context;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat;
 import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import javax.xml.bind.DatatypeConverter;
@@ -26,14 +26,14 @@ public class DocumentContextFactoryImpl implements DocumentContextFactory {
     if (StringUtils.isEmpty(value)) {
       return null;
     }
-    return dateFormatter.format(OffsetDateTime.parse(value));
+    return dateFormatter.format(LocalDateTime.parse(value));
   }
 
   private static String dateTimeFormatter(String value) {
     if (StringUtils.isEmpty(value)) {
       return null;
     }
-    return dateTimeFormatter.format(OffsetDateTime.parse(value));
+    return dateTimeFormatter.format(LocalDateTime.parse(value));
   }
 
   private static Locale getLocale() {

@@ -1,9 +1,10 @@
 package pico.erp.document;
 
 import java.util.LinkedList;
+import kkojaeh.spring.boot.component.ComponentAutowired;
+import kkojaeh.spring.boot.component.ComponentBean;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -13,13 +14,12 @@ import pico.erp.document.DocumentRequests.DeleteRequest;
 import pico.erp.document.storage.DocumentStorageStrategy;
 import pico.erp.document.subject.DocumentSubjectRequests;
 import pico.erp.document.subject.DocumentSubjectService;
-import pico.erp.shared.Public;
 import pico.erp.shared.data.ContentInputStream;
 import pico.erp.shared.event.Event;
 import pico.erp.shared.event.EventPublisher;
 
 @Service
-@Public
+@ComponentBean
 @Transactional
 @Validated
 public class DocumentServiceLogic implements DocumentService {
@@ -27,11 +27,9 @@ public class DocumentServiceLogic implements DocumentService {
   @Autowired
   private DocumentRepository documentRepository;
 
-  @Lazy
-  @Autowired
+  @ComponentAutowired(required = false)
   private DocumentStorageStrategy documentStorageStrategy;
 
-  @Lazy
   @Autowired
   private DocumentSubjectService documentSubjectService;
 
